@@ -1,5 +1,7 @@
 # 🎓 Placement Tracker | Full-Stack Spring Boot Showcase
 
+👉 **Live Demo**: [https://placement-tracker-qlp9.onrender.com](https://placement-tracker-qlp9.onrender.com)
+
 An ultra-premium, production-grade **Placement Tracker & Analytics Console** designed to streamline job applications, candidate profiles, and recruitment pipelines. Featuring a custom-tailored dark green glassmorphic design system themed with sharp nature backdrops, smooth micro-animations, and dynamic visual widgets.
 
 ---
@@ -104,4 +106,5 @@ Developed with ❤️ by **Ram Chandu Nandamuri**.
 - **GitHub**: [@ramchandu438](https://github.com/ramchandu438)
 - **LinkedIn**: [Ram Chandu Nandamuri](https://www.linkedin.com/in/ram-chandu-nandamuri-912015254/)
 - **Email**: ramchandu438@gmail.com
-- **Live URL**: [https://placement-tracker-qlp9.onrender.com](https://placement-tracker-qlp9.onrender.com)
+- **Live Showcase**: [https://placement-tracker-qlp9.onrender.com](https://placement-tracker-qlp9.onrender.com)
+- **Live Dashboard**: [https://placement-tracker-qlp9.onrender.com/dashboard](https://placement-tracker-qlp9.onrender.com/dashboard)
