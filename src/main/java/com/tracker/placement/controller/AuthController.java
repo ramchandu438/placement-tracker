@@ -76,4 +76,41 @@ public class AuthController {
         session.invalidate();
         return "redirect:/login?logout=true";
     }
+
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordForm() {
+        return "auth/forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String processForgotPassword(@RequestParam String email, Model model) {
+        try {
+            studentService.generateAndSendOtp(email);
+            return "redirect:/verify-otp?email=" + email;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "auth/forgot-password";
+        }
+    }
+
+    @GetMapping("/verify-otp")
+    public String showVerifyOtpForm(@RequestParam String email, Model model) {
+        model.addAttribute("email", email);
+        return "auth/verify-otp";
+    }
+
+    @PostMapping("/verify-otp")
+    public String processVerifyOtp(@RequestParam String email, 
+                                   @RequestParam String otpCode, 
+                                   @RequestParam String newPassword, 
+                                   Model model) {
+        try {
+            studentService.verifyOtpAndResetPassword(email, otpCode, newPassword);
+            return "redirect:/login?resetSuccess=true";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("email", email);
+            return "auth/verify-otp";
+        }
+    }
 }

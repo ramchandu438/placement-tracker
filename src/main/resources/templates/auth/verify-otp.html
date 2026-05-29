@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: header-css('Verify OTP')}"></head>
+<body>
+
+    <!-- Outer App Frame Shell -->
+    <div class="app-frame">
+        
+        <!-- Header Navbar -->
+        <header th:replace="~{layout :: navbar}"></header>
+
+        <!-- Main Container -->
+        <main class="container" style="padding: 10px 0; display: flex; align-items: center;">
+            <div class="auth-wrapper">
+                
+                <!-- Left Hero Panel -->
+                <div class="hero-left">
+                    <h1 class="hero-title">
+                        Reset<br>
+                        <span class="indent-title">Credential</span><br>
+                        Auth
+                    </h1>
+                    
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="document.getElementById('otpCode').focus();">Enter Code</button>
+                        <a th:href="@{/forgot-password}" class="btn-secondary">Resend Code</a>
+                    </div>
+                    
+                    <div class="hero-subtitle-block">
+                        <span class="bullet-square"></span>
+                        <p>Complete verification by inputting the active code received via email and setting your new password.</p>
+                    </div>
+                    
+                    <!-- Scroll & Contact Row -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; width: 100%; max-width: 520px; z-index: 5;">
+                        <div class="scroll-indicator" style="margin-top: 0;">
+                            <div class="mouse-icon">
+                                <div class="mouse-wheel"></div>
+                            </div>
+                            <span>Scroll down</span>
+                        </div>
+                        
+                        <!-- Developer Contact Capsule -->
+                        <div class="dev-contact-wrapper">
+                            <button class="btn-dev-contact" title="Contact Developer">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span>Developer</span>
+                            </button>
+                            <div class="dev-contact-tooltip">
+                                <a href="mailto:ramchandu438@gmail.com" class="dev-link">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    <span>ramchandu438@gmail.com</span>
+                                </a>
+                                <a href="https://github.com/ramchandu438" target="_blank" class="dev-link">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                    <span>github.com/ramchandu438</span>
+                                </a>
+                                <a href="https://www.linkedin.com/in/ram-chandu-nandamuri-912015254/" target="_blank" class="dev-link">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                    <span>LinkedIn Profile</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card Panel -->
+                <div class="auth-right-container">
+                    
+                    <!-- Glass Card Form -->
+                    <div class="auth-card" style="border-radius: 20px;">
+                        <h2 class="auth-title">Verify Code</h2>
+                        <p class="auth-subtitle" style="font-size: 13px; color: rgba(255, 255, 255, 0.6); margin-bottom: 25px;">
+                            We have dispatched a 6-digit verification code to the address below.
+                        </p>
+
+                        <!-- Error Messages -->
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+                            Invalid code or expired.
+                        </div>
+
+                        <!-- Form -->
+                        <form th:action="@{/verify-otp}" method="post">
+                            
+                            <!-- Hidden email input for context -->
+                            <input type="hidden" name="email" th:value="${email}">
+
+                            <div class="form-group">
+                                <label class="form-label" style="opacity: 0.85;">Sending Recipient</label>
+                                <input type="text" class="form-control" th:value="${email}" disabled style="border-radius: 10px; background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5);">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="otpCode" class="form-label">6-Digit Code</label>
+                                <input type="text" id="otpCode" name="otpCode" class="form-control" placeholder="123456" required maxlength="6" autocomplete="one-time-code" style="border-radius: 10px; font-weight: bold; letter-spacing: 0.1em; text-align: center;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter your new password" required autocomplete="new-password" style="border-radius: 10px;">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; border-radius: 10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                Reset Password & Log In
+                            </button>
+                            
+                        </form>
+
+                        <div class="auth-footer" style="font-size: 13px;">
+                            Didn't receive the code? 
+                            <a th:href="@{/forgot-password}" class="auth-link">Request again</a>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Right Glass Cards -->
+                    <div class="hero-bottom-cards" style="max-width: 440px;">
+                        <div class="visual-card">
+                            <div class="visual-card-title">Authentic Reset</div>
+                            <div class="visual-card-desc">Restoring access credentials triggers session encryption rotation for maximum security.</div>
+                            <div class="visual-svg-container">
+                                <!-- Glass rotating lock SVG -->
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

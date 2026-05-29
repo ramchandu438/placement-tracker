@@ -13,10 +13,12 @@ import java.util.Optional;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, EmailService emailService) {
         this.studentRepository = studentRepository;
+        this.emailService = emailService;
     }
 
     public Student registerStudent(Student student) {
@@ -60,5 +62,47 @@ public class StudentService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);
         }
+    }
+
+    public void generateAndSendOtp(String email) {
+        Optional<Student> studentOpt = studentRepository.findByEmail(email);
+        if (studentOpt.isEmpty()) {
+            throw new IllegalArgumentException("Email address is not registered!");
+        }
+
+        Student student = studentOpt.get();
+        // Generate random 6-digit OTP
+        String otpCode = String.format("%06d", new java.util.Random().nextInt(1000000));
+        
+        student.setOtpCode(otpCode);
+        student.setOtpExpiry(java.time.LocalDateTime.now().plusMinutes(5));
+        studentRepository.save(student);
+
+        // Send Email
+        emailService.sendOtpEmail(email, otpCode);
+    }
+
+    public boolean verifyOtpAndResetPassword(String email, String otpCode, String newPassword) {
+        Optional<Student> studentOpt = studentRepository.findByEmail(email);
+        if (studentOpt.isEmpty()) {
+            throw new IllegalArgumentException("Email address is not registered!");
+        }
+
+        Student student = studentOpt.get();
+        
+        if (student.getOtpCode() == null || !student.getOtpCode().equals(otpCode)) {
+            throw new IllegalArgumentException("Invalid verification code!");
+        }
+
+        if (student.getOtpExpiry() == null || student.getOtpExpiry().isBefore(java.time.LocalDateTime.now())) {
+            throw new IllegalArgumentException("Verification code has expired!");
+        }
+
+        // Reset
+        student.setPassword(hashPassword(newPassword));
+        student.setOtpCode(null);
+        student.setOtpExpiry(null);
+        studentRepository.save(student);
+        return true;
     }
 }

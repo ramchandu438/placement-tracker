@@ -21,6 +21,12 @@ public class Student {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "otp_code")
+    private String otpCode;
+
+    @Column(name = "otp_expiry")
+    private java.time.LocalDateTime otpExpiry;
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 
@@ -74,5 +80,21 @@ public class Student {
 
     public void setApplications(List<Application> applications) {
         this.applications = applications;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
+    }
+
+    public java.time.LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(java.time.LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
     }
 }
