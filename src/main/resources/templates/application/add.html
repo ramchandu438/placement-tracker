@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: header-css('Add Application')}"></head>
+<body>
+
+    <!-- Header Navbar -->
+    <header th:replace="~{layout :: navbar}"></header>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <div style="margin-bottom: 24px; max-width: 650px; margin-left: auto; margin-right: auto;">
+            <a th:href="@{/dashboard}" class="btn-secondary" style="padding: 8px 16px; font-size: 14px; display: inline-flex; align-items: center; border-radius: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="glass-card form-card">
+            
+            <div style="border-bottom: 1px solid var(--glass-border); padding-bottom: 16px; margin-bottom: 24px;">
+                <h1 style="font-family: var(--font-heading); font-size: 24px; font-weight: 700;">Track New Application</h1>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 4px;">Enter details about the company opportunity to add it to your analytics.</p>
+            </div>
+
+            <!-- Form -->
+            <form th:action="@{/applications/add}" th:object="${application}" method="post">
+                
+                <div class="form-grid">
+                    
+                    <!-- Company Name -->
+                    <div class="form-group">
+                        <label for="companyName" class="form-label">Company Name</label>
+                        <input type="text" id="companyName" th:field="*{companyName}" class="form-control" placeholder="e.g. Google, Microsoft" required>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="form-group">
+                        <label for="role" class="form-label">Role / Profile</label>
+                        <input type="text" id="role" th:field="*{role}" class="form-control" placeholder="e.g. Software Development Engineer" required>
+                    </div>
+
+                    <!-- Package in LPA -->
+                    <div class="form-group">
+                        <label for="packageLpa" class="form-label">Package (LPA)</label>
+                        <input type="number" step="0.01" id="packageLpa" th:field="*{packageLpa}" class="form-control" placeholder="e.g. 15.0" required min="0">
+                    </div>
+
+                    <!-- Date Applied -->
+                    <div class="form-group">
+                        <label for="dateApplied" class="form-label">Date Applied</label>
+                        <input type="date" id="dateApplied" th:field="*{dateApplied}" class="form-control" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label for="status" class="form-label">Current Status</label>
+                        <select id="status" th:field="*{status}" class="form-control" required>
+                            <option th:each="stat : ${statuses}" th:value="${stat.name()}" th:text="${stat.displayName}">APPLIED</option>
+                        </select>
+                    </div>
+
+                    <!-- Rounds Cleared -->
+                    <div class="form-group">
+                        <label for="roundsCleared" class="form-label">Rounds Cleared</label>
+                        <input type="number" id="roundsCleared" th:field="*{roundsCleared}" class="form-control" placeholder="e.g. 0" required min="0" value="0">
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group text-area-full">
+                        <label for="notes" class="form-label">Notes & Comments (Optional)</label>
+                        <textarea id="notes" th:field="*{notes}" class="form-control" placeholder="Add preparation links, interview schedules, round-by-round topics, or key contact details..."></textarea>
+                    </div>
+
+                </div>
+
+                <!-- Action buttons -->
+                <div class="form-actions">
+                    <a th:href="@{/dashboard}" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Save Application
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <!-- Scripts -->
+    <th:block th:replace="~{layout :: footer-js}"></th:block>
+
+</body>
+</html>

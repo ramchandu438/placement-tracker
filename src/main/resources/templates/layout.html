@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Head Fragment -->
+<head th:fragment="header-css (title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | Placement Tracker'">Placement Tracker</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/style.css(v=15)}">
+    <!-- SVG Icon Favicon or Placeholder -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+</head>
+<body>
+
+    <!-- Navbar Fragment -->
+    <header th:fragment="navbar" class="navbar">
+        <!-- Brand logo -->
+        <a th:href="@{/dashboard}" class="nav-brand elevra-logo">
+            PLACEMENT TRACKER
+        </a>
+
+        <div class="nav-user" th:if="${session.loggedInStudent != null}">
+            <div class="user-tag" th:text="'Hello, ' + ${session.loggedInStudent.name}">Hello, Student</div>
+            <a th:href="@{/logout}" class="btn-secondary" style="padding: 10px 22px; font-size: 13px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Logout
+            </a>
+        </div>
+        <div class="nav-user" th:if="${session.loggedInStudent == null}">
+            <a th:href="@{/login}" class="btn-secondary" style="padding: 10px 24px; font-size: 13px;">Login</a>
+        </div>
+    </header>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer" th:if="${session.loggedInStudent != null}" style="display: flex; justify-content: flex-start; padding: 20px 0; width: 100%;">
+        <!-- Developer Contact Capsule -->
+        <div class="dev-contact-wrapper" style="margin-left: 20px;">
+            <button class="btn-dev-contact" title="Contact Developer">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Developer</span>
+            </button>
+            <div class="dev-contact-tooltip">
+                <a href="mailto:ramchandu438@gmail.com" target="_blank" class="tooltip-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Email
+                </a>
+                <a href="https://github.com/ramchandu438" target="_blank" class="tooltip-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/ram-chandu-nandamuri-912015254/" target="_blank" class="tooltip-item">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Scripts Fragment -->
+    <th:block th:fragment="footer-js">
+        <script th:src="@{/js/main.js(v=14)}"></script>
+    </th:block>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: header-css('Register')}"></head>
+<body>
+
+    <!-- Outer App Frame Shell -->
+    <div class="app-frame">
+        
+        <!-- Header Navbar -->
+        <header th:replace="~{layout :: navbar}"></header>
+
+        <!-- Main Container -->
+        <main class="container" style="padding: 10px 0; display: flex; align-items: center;">
+            <div class="auth-wrapper">
+                
+                <!-- Left Hero Panel (Elevra style) -->
+                <div class="hero-left">
+                    <h1 class="hero-title">
+                        Careers<br>
+                        <span class="indent-title">That Drive</span><br>
+                        Growth
+                    </h1>
+                    
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="document.getElementById('name').focus();">Let's Start</button>
+                        <a th:href="@{/login}" class="btn-secondary">Already Registered?</a>
+                    </div>
+                    
+                    <div class="hero-subtitle-block">
+                        <span class="bullet-square"></span>
+                        <p>Exploring future-ready digital workflows and recruitment analytics for candidates who aim higher.</p>
+                    </div>
+                    
+                    <!-- Scroll & Contact Row -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; width: 100%; max-width: 520px; z-index: 5;">
+                        <!-- Scroll down indicator -->
+                        <div class="scroll-indicator" style="margin-top: 0;">
+                            <div class="mouse-icon">
+                                <div class="mouse-wheel"></div>
+                            </div>
+                            <span>Scroll down</span>
+                        </div>
+                        
+                        <!-- Developer Contact Capsule -->
+                        <div class="dev-contact-wrapper">
+                            <button class="btn-dev-contact" title="Contact Developer">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span>Developer</span>
+                            </button>
+                            <div class="dev-contact-tooltip">
+                                <a href="mailto:ramchandu438@gmail.com" target="_blank" class="tooltip-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    Email
+                                </a>
+                                <a href="https://github.com/ramchandu438" target="_blank" class="tooltip-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                    GitHub
+                                </a>
+                                <a href="https://www.linkedin.com/in/ram-chandu-nandamuri-912015254/" target="_blank" class="tooltip-item">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                    LinkedIn
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Authentication Card Column -->
+                <div style="display: flex; flex-direction: column; gap: 30px; align-items: flex-end; width: 100%;">
+                    
+                    <div class="glass-card auth-card" style="width: 100%; max-width: 440px; margin: 0; background: rgba(14, 32, 17, 0.25);">
+                        <div class="auth-header">
+                            <h2 class="auth-title" style="font-size: 24px; letter-spacing: 0.05em; text-transform: uppercase;">Create Account</h2>
+                            <p class="auth-subtitle" style="font-size: 13px; color: var(--text-muted);">Start tracking your placement journey today</p>
+                        </div>
+
+                        <!-- Registration Error Messages -->
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+                            Email is already registered!
+                        </div>
+
+                        <!-- Form -->
+                        <form th:action="@{/register}" th:object="${student}" method="post">
+                            
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="John Doe" required autocomplete="name" style="border-radius: 10px;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="john.doe@college.edu" required autocomplete="email" style="border-radius: 10px;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Create a strong password" required autocomplete="new-password" minlength="6" style="border-radius: 10px;">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; border-radius: 10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                Create Account
+                            </button>
+                            
+                        </form>
+
+                        <div class="auth-footer" style="font-size: 13px;">
+                            Already have an account? 
+                            <a th:href="@{/login}" class="auth-link">Log In</a>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Right Glass Cards -->
+                    <div class="hero-bottom-cards" style="max-width: 440px;">
+                        <!-- Card 1 -->
+                        <div class="visual-card">
+                            <div class="visual-card-title">Success Analytics</div>
+                            <div class="visual-card-desc">Scale your applications with precision.</div>
+                            <div class="visual-svg-container">
+                                <!-- Glass bar chart SVG -->
+                                <svg width="100%" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0" y="24" width="16" height="16" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                                    <rect x="25" y="16" width="16" height="24" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                                    <rect x="50" y="20" width="16" height="20" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                                    <rect x="75" y="8" width="16" height="32" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                                    <rect x="100" y="0" width="16" height="40" rx="2" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" style="filter: drop-shadow(0 0 8px rgba(16,185,129,0.3));"/>
+                                    <path d="M8 24L33 16L58 20L83 8L108 0" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="visual-card">
+                            <div class="visual-card-title">Secure Profiles</div>
+                            <div class="visual-card-desc">Your recruitment credentials kept private.</div>
+                            <div class="visual-svg-container" style="display: flex; justify-content: center; align-items: center;">
+                                <!-- Padlock SVG -->
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: rgba(255,255,255,0.75); filter: drop-shadow(0 0 8px rgba(16,185,129,0.25));">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="rgba(255,255,255,0.06)"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    <circle cx="12" cy="16" r="1"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer th:replace="~{layout :: footer}"></footer>
+        
+    </div>
+
+    <!-- Scripts -->
+    <th:block th:replace="~{layout :: footer-js}"></th:block>
+
+</body>
+</html>

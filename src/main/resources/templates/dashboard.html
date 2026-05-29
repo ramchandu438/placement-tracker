@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: header-css('Student Dashboard')}"></head>
+<body>
+
+    <!-- Header Navbar -->
+    <header th:replace="~{layout :: navbar}"></header>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- Alerts for CRUD updates -->
+        <div th:if="${param.added}" class="alert alert-success">
+            🎉 Application added successfully!
+        </div>
+        <div th:if="${param.updated}" class="alert alert-success">
+            ✨ Application details updated successfully!
+        </div>
+        <div th:if="${param.deleted}" class="alert alert-success">
+            🗑️ Application has been successfully deleted.
+        </div>
+        <div th:if="${param.error}" class="alert alert-danger">
+            ⚠️ An error occurred. Access denied or record not found.
+        </div>
+
+        <!-- Welcome Banner -->
+        <div style="margin-bottom: 30px;">
+            <h1 style="font-family: var(--font-heading); font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #ffffff 40%, var(--text-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Placement Analytics
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 15px;">Monitor your active job opportunities and recruitment process stages.</p>
+        </div>
+
+        <!-- Dashboard Statistics Grid -->
+        <div class="stats-grid">
+            <!-- Total Applications Card -->
+            <div class="glass-card stat-card total">
+                <div class="stat-header">
+                    <span class="stat-title">Total</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.total}">0</div>
+            </div>
+
+            <!-- Applied Card -->
+            <div class="glass-card stat-card applied">
+                <div class="stat-header">
+                    <span class="stat-title">Applied</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.applied}">0</div>
+            </div>
+
+            <!-- Online Assessment Card -->
+            <div class="glass-card stat-card oa">
+                <div class="stat-header">
+                    <span class="stat-title">OA</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.oa}">0</div>
+            </div>
+
+            <!-- Interview Card -->
+            <div class="glass-card stat-card interview">
+                <div class="stat-header">
+                    <span class="stat-title">Interview</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.interview}">0</div>
+            </div>
+
+            <!-- Selected Card -->
+            <div class="glass-card stat-card selected">
+                <div class="stat-header">
+                    <span class="stat-title" style="color: var(--color-selected);">Selected</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.selected}">0</div>
+            </div>
+
+            <!-- Rejected Card -->
+            <div class="glass-card stat-card rejected">
+                <div class="stat-header">
+                    <span class="stat-title">Rejected</span>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    </div>
+                </div>
+                <div class="stat-value odometer" th:attr="data-target=${stats.rejected}">0</div>
+            </div>
+        </div>
+
+        <!-- Application List Section -->
+        <div class="glass-card" style="padding: 24px;">
+            
+            <!-- Controls Bar (Search, Filter, Add button) -->
+            <div class="dashboard-header" style="flex-wrap: wrap;">
+                <div>
+                    <h2 class="dashboard-title">Company Applications</h2>
+                </div>
+                
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;" th:if="${not #lists.isEmpty(applications)}">
+                    <!-- Dynamic Search Input -->
+                    <div style="position: relative; min-width: 200px;">
+                        <input type="text" id="searchCompany" class="form-control" placeholder="Search company or role..." style="padding-left: 36px; padding-top: 8px; padding-bottom: 8px; font-size: 14px; border-radius: 10px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 14px; top: 13px; color: var(--text-muted);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    
+                    <!-- Dynamic Status Filter -->
+                    <select id="filterStatus" class="form-control" style="width: auto; padding-top: 8px; padding-bottom: 8px; font-size: 14px; border-radius: 10px; min-width: 140px;">
+                        <option value="ALL">All Statuses</option>
+                        <option value="APPLIED">Applied</option>
+                        <option value="OA">Online Assessment</option>
+                        <option value="INTERVIEW">Interview</option>
+                        <option value="SELECTED">Selected 🎉</option>
+                        <option value="REJECTED">Rejected</option>
+                    </select>
+
+                    <a th:href="@{/applications/add}" class="btn-primary" style="padding: 8px 16px; font-size: 14px; border-radius: 10px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add New
+                    </a>
+                </div>
+                
+                <div th:if="${#lists.isEmpty(applications)}">
+                    <a th:href="@{/applications/add}" class="btn-primary" style="padding: 8px 16px; font-size: 14px; border-radius: 10px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add New
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(applications)}" class="empty-state">
+                <div style="margin-bottom: 24px; display: flex; justify-content: center;">
+                    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Back Cover Gradient -->
+                            <linearGradient id="foldBackGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.12)"/>
+                                <stop offset="100%" stop-color="rgba(255, 255, 255, 0.02)"/>
+                            </linearGradient>
+                            <!-- Front Cover Gradient -->
+                            <linearGradient id="foldFrontGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.28)"/>
+                                <stop offset="50%" stop-color="rgba(255, 255, 255, 0.08)"/>
+                                <stop offset="100%" stop-color="rgba(244, 63, 94, 0.18)"/>
+                            </linearGradient>
+                            <!-- White Highlights -->
+                            <linearGradient id="glassHighlight" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(255, 255, 255, 0.6)"/>
+                                <stop offset="100%" stop-color="rgba(255, 255, 255, 0.05)"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- folder back tab and body -->
+                        <path d="M6 16C6 13.7909 7.79086 12 10 12H22L28 18H54C56.2091 18 58 19.7909 58 22V50C58 52.2091 56.2091 54 54 54H10C7.79086 54 6 52.2091 6 50V16Z" fill="url(#foldBackGrad)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5"/>
+                        <!-- Inner document peaking out -->
+                        <rect x="14" y="20" width="36" height="24" rx="3" fill="rgba(255, 255, 255, 0.25)" stroke="rgba(255, 255, 255, 0.4)" stroke-width="1"/>
+                        <line x1="20" y1="26" x2="44" y2="26" stroke="rgba(255, 255, 255, 0.4)" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="20" y1="32" x2="36" y2="32" stroke="rgba(255, 255, 255, 0.4)" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Front glass plate (Convex overlapping plate with heavy reflection) -->
+                        <path d="M6 24C6 21.7909 7.79086 20 10 20H54C56.2091 20 58 21.7909 58 24V50C58 52.2091 56.2091 54 54 54H10C7.79086 54 6 52.2091 6 50V24Z" fill="url(#foldFrontGrad)" stroke="url(#glassHighlight)" stroke-width="1.5" style="filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));"/>
+                        <!-- Front glass specular diagonal reflection line -->
+                        <path d="M8 24L52 52" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="empty-title">No applications tracked yet</h3>
+                <p class="empty-subtitle">Your dashboard is empty! Track interviews, assessments, packages, and offers in one clean interface.</p>
+                <a th:href="@{/applications/add}" class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Track Your First Application
+                </a>
+            </div>
+
+            <!-- Table section -->
+            <div th:if="${not #lists.isEmpty(applications)}" class="table-wrapper">
+                <table class="app-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px; text-align: center;"></th>
+                            <th>Company</th>
+                            <th>Role / Profile</th>
+                            <th>Package (LPA)</th>
+                            <th>Date Applied</th>
+                            <th style="text-align: center;">Rounds Cleared</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="app : ${applications}">
+                            <tr class="app-row" th:attr="data-id=${app.id}, data-status=${app.status}">
+                                <td style="text-align: center;">
+                                    <span class="chevron-icon">▼</span>
+                                </td>
+                                <td class="company-cell" th:text="${app.companyName}">Google</td>
+                                <td class="role-cell" th:text="${app.role}">Software Engineer</td>
+                                <td class="package-cell" th:text="${app.packageLpa} + ' LPA'">18.5 LPA</td>
+                                <td th:text="${#temporals.format(app.dateApplied, 'dd-MMM-yyyy')}">25-May-2026</td>
+                                <td style="text-align: center; font-weight: 700; color: var(--text-primary);" th:text="${app.roundsCleared}">0</td>
+                                <td>
+                                    <!-- Status Badge with custom helper classes -->
+                                    <span class="status-badge" th:classappend="${#strings.toLowerCase(app.status)}" th:attr="data-status=${app.status.name()}" th:text="${app.status.displayName}">
+                                        APPLIED
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="actions-cell">
+                                        <a th:href="@{/applications/edit/{id}(id=${app.id})}" class="btn-action-edit" title="Edit Application">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                        </a>
+                                        <a th:href="@{/applications/delete/{id}(id=${app.id})}" class="btn-action-delete" title="Delete Application" th:attr="data-company=${app.companyName}">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="drawer-row" th:id="'drawer-' + ${app.id}">
+                                <td colspan="8">
+                                    <div class="drawer-content">
+                                        <!-- Interactive Roadmap Pipeline -->
+                                        <div class="pipeline-flow" th:attr="data-status=${app.status}">
+                                            <!-- Step 1: Applied -->
+                                            <div class="pipeline-step" data-step="APPLIED">
+                                                <div class="step-dot">
+                                                    <span class="step-icon">📤</span>
+                                                </div>
+                                                <div class="step-label">Applied</div>
+                                            </div>
+                                            <div class="pipeline-connector" data-connector="1"></div>
+                                            <!-- Step 2: OA -->
+                                            <div class="pipeline-step" data-step="OA">
+                                                <div class="step-dot">
+                                                    <span class="step-icon">💻</span>
+                                                </div>
+                                                <div class="step-label">Online Assessment</div>
+                                            </div>
+                                            <div class="pipeline-connector" data-connector="2"></div>
+                                            <!-- Step 3: Interview -->
+                                            <div class="pipeline-step" data-step="INTERVIEW">
+                                                <div class="step-dot">
+                                                    <span class="step-icon">💬</span>
+                                                </div>
+                                                <div class="step-label">Interview</div>
+                                            </div>
+                                            <div class="pipeline-connector" data-connector="3"></div>
+                                            <!-- Step 4: Offer / Status -->
+                                            <div class="pipeline-step" th:attr="data-step=${app.status.name() == 'REJECTED' ? 'REJECTED' : 'SELECTED'}">
+                                                <div class="step-dot">
+                                                    <span class="step-icon" th:text="${app.status.name() == 'REJECTED' ? '❌' : '🏆'}">🏆</span>
+                                                </div>
+                                                <div class="step-label" th:text="${app.status.name() == 'REJECTED' ? 'Rejected' : 'Selected'}">Selected</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Application Information Grid -->
+                                        <div class="drawer-details">
+                                            <div class="details-item">
+                                                <strong>Date Tracked</strong>
+                                                <span th:text="${#temporals.format(app.dateApplied, 'dd-MMMM-yyyy')}">25-May-2026</span>
+                                            </div>
+                                            <div class="details-item">
+                                                <strong>Technical Rounds Cleared</strong>
+                                                <span th:text="${app.roundsCleared} + ' Rounds'">2 Rounds</span>
+                                            </div>
+                                            <div class="details-item" style="grid-column: span 2;">
+                                                <strong>Key Interview Notes / Next Steps</strong>
+                                                <span th:if="${app.notes != null && !#strings.isEmpty(app.notes)}" th:text="${app.notes}">Contact HR for review</span>
+                                                <span th:if="${app.notes == null || #strings.isEmpty(app.notes)}" style="font-style: italic; color: var(--text-muted);">No notes available for this application. Click edit to add links, schedules, or package details.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <!-- Hidden Row for Client-side Search Empty State -->
+                        <tr id="tableEmptyState" style="display: none;">
+                            <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
+                                <p style="font-weight: 500;">No matching applications found!</p>
+                                <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Try searching another keyword or clearing your status filters.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <!-- Scripts -->
+    <th:block th:replace="~{layout :: footer-js}"></th:block>
+
+</body>
+</html>
