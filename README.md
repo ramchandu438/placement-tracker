@@ -1,12 +1,12 @@
 # 🎓 Premium Placement Tracker
 
-An ultra-premium, modern **Placement Tracker** web application designed to manage student profiles, placement pipelines, and recruitment analytics. Featuring a stunning custom-tailored **Elevra UI layout** themed with vibrant mint/green colors and a clean nature backdrop.
+An ultra-premium, modern **Placement Tracker** web application designed to manage student profiles, placement pipelines, and recruitment analytics. Featuring a stunning, custom-tailored glass layout themed with vibrant mint/green colors and a clean nature backdrop.
 
 ---
 
 ## ✨ Features
 
-- **Elevra UI-inspired Showcase**: A gorgeous, non-blurry dashboard container (`.app-frame`) over a high-resolution backdrop featuring dynamic metrics odometers and modern visual styling.
+- **Premium Glass Showcase**: A gorgeous, non-blurry dashboard container (`.app-frame`) over a high-resolution backdrop featuring dynamic metrics odometers and modern visual styling.
 - **Dynamic Metrics Odometer**: Interactive metrics trackers displaying active drives, average packages, and placement percentages.
 - **Expanding Pipeline Accordion**: A clean, interactive visual timeline/accordion drawer to track students through different recruitment stages.
 - **Secure Profiles & CRUD Operations**: Full student registration, authentication, profile creation, and real-time updates.
