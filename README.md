@@ -6,7 +6,7 @@ An ultra-premium, production-grade **Placement Tracker & Analytics Console** des
 
 ---
 
-## 💼 The Recruiter Pitch: Why This Project Stands Out
+## Why This Project Stands Out
 
 This project is a high-fidelity showcase of **Full-Stack Engineering Capability**, demonstrating an optimal balance between robust backend business logic, secure database management, and premium frontend design aesthetics.
 
